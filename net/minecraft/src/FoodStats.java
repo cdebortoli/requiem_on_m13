@@ -15,12 +15,17 @@ public class FoodStats
     private int foodTimer;
     private int prevFoodLevel;
 
+	// [ERKIN]
+	private float baseFoodExhaustionValue;
+	
     public FoodStats()
     {
         foodTimer = 0;
         foodLevel = 20;
         prevFoodLevel = 20;
         foodSaturationLevel = 5F;
+		// [ERKIN]
+		baseFoodExhaustionValue = 0.25F;
     }
 
     /**
@@ -163,4 +168,10 @@ public class FoodStats
     {
         foodSaturationLevel = par1;
     }
+	
+	// [ERKIN]
+	public float getBaseFoodExhaustionValue()
+	{
+		return baseFoodExhaustionValue;
+	}
 }

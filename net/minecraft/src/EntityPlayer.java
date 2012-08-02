@@ -110,7 +110,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      * An instance of a fishing rod's hook. If this isn't null, the icon image of the fishing rod is slightly different
      */
     public EntityFishHook fishEntity;
+	
+    /** The player's water stats. (See class WaterStats) */
+    //[ERKIN]
+    protected WaterStats waterStats;
+    protected EnergyStats energyStats;
 
+    /** The player's temperature (See class PlayerTemperature) */
+    //[ERKIN]
+    protected PlayerTemperature playerTemperature;
+	
     public EntityPlayer(World par1World)
     {
         super(par1World);
@@ -138,6 +147,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         field_70741_aB = 180F;
         fireResistance = 20;
         texture = "/mob/char.png";
+        waterStats = new WaterStats(); //[ERKIN]
+        playerTemperature = new PlayerTemperature(); //[ERKIN]
+        energyStats = new EnergyStats(); // [ERKIN]
+        //DEBUG [ERKIN]
+        //inventory.addItemStackToInventory(new ItemStack(Item.bed, 1));
+        inventory.addItemStackToInventory(new ItemStack(Item.gourdFull, 1));
+        inventory.addItemStackToInventory(new ItemStack(Item.leather, 10));
     }
 
     public int getMaxHealth()
@@ -251,6 +267,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (isPlayerSleeping())
         {
+            energyStats.addStats(20); // [ERKIN]
             sleepTimer++;
 
             if (sleepTimer > 100)
@@ -344,6 +361,16 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         if (!worldObj.isRemote)
         {
             foodStats.onUpdate(this);
+            //[ERKIN]
+            waterStats.onUpdate(this);
+            energyStats.onUpdate(this);
+            playerTemperature.onUpdate(this);
+            waterStats.setDehydrationIncreased(playerTemperature.getIsHot());
+			energyStats.setFatigueIncreased(playerTemperature.getIsCold());
+            if (playerTemperature.getIsInHypothermia() || energyStats.getIsFatigued())
+            {
+                setPlayerAsExhausted();
+            }
         }
     }
 
@@ -384,8 +411,18 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         {
             updateItemUse(itemInUse, 16);
             int i = itemInUse.stackSize;
-            ItemStack itemstack = itemInUse.onFoodEaten(worldObj, this);
-
+			
+            // [ERKIN]
+            ItemStack itemstack;
+			if (itemInUse.getItem().getItemName().equals("item.gourdFull"))
+            {
+                itemstack = itemInUse.onWaterDrunk(worldObj, this);
+            }
+            else
+            {
+				itemstack = itemInUse.onFoodEaten(worldObj, this);
+			}
+			
             if (itemstack != itemInUse || itemstack != null && itemstack.stackSize != i)
             {
                 inventory.mainInventory[inventory.currentItem] = itemstack;
@@ -460,18 +497,25 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     private int getSwingSpeedModifier()
     {
+	    // [ERKIN]
+        int digSpeedHypothermia = 0;
+        if (playerTemperature.getIsInHypothermia() || energyStats.getIsFatigued())
+        {
+            digSpeedHypothermia += 6;
+        }
+		
         if (isPotionActive(Potion.digSpeed))
         {
-            return 6 - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
+            return 6 + digSpeedHypothermia - (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier()) * 1;
         }
 
         if (isPotionActive(Potion.digSlowdown))
         {
-            return 6 + (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
+            return 6 + digSpeedHypothermia - (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
         }
         else
         {
-            return 6;
+            return 6 + digSpeedHypothermia;
         }
     }
 
@@ -786,6 +830,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         }
 
         foodStats.readNBT(par1NBTTagCompound);
+        waterStats.readNBT(par1NBTTagCompound); //[ERKIN]
+        energyStats.readNBT(par1NBTTagCompound); // [ERKIN]
+        playerTemperature.readNBT(par1NBTTagCompound); // [ERKIN]
         capabilities.readCapabilitiesFromNBT(par1NBTTagCompound);
 
         if (par1NBTTagCompound.hasKey("EnderItems"))
@@ -817,6 +864,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         }
 
         foodStats.writeNBT(par1NBTTagCompound);
+        waterStats.writeNBT(par1NBTTagCompound); //[ERKIN]
+        energyStats.writeNBT(par1NBTTagCompound); // [ERKIN]
+        playerTemperature.writeNBT(par1NBTTagCompound); // [ERKIN]
         capabilities.writeCapabilitiesToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setTag("EnderItems", field_71078_a.func_70487_g());
     }
@@ -1034,6 +1084,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         par2 = applyArmorCalculations(par1DamageSource, par2);
         par2 = applyPotionDamageCalculations(par1DamageSource, par2);
         addExhaustion(par1DamageSource.getHungerDamage());
+		addWaterExhaustion(par1DamageSource.getThirstDamage()); // [ERKIN]
+		addEnergyExhaustion(par1DamageSource.getFatigueDamage()); // [ERKIN]
         health -= par2;
     }
 
@@ -1244,7 +1296,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
                 }
             }
 
-            addExhaustion(0.3F);
+			addGeneralExhaustion(2.6F,0.0F,false); // [ERKIN]
+            //addExhaustion(0.3F);
         }
     }
 
@@ -1578,16 +1631,26 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
      */
     protected void jump()
     {
-        super.jump();
+		// [ERKIN]
+        if (playerTemperature.getIsInHypothermia() ||  energyStats.getIsFatigued())
+        {
+            super.jumpWithFatigue();
+        }
+        else
+        {
+			super.jump();
+		}
         addStat(StatList.jumpStat, 1);
 
         if (isSprinting())
         {
-            addExhaustion(0.8F);
+			addGeneralExhaustion(2.6F,0.0F,false); // [ERKIN]
+            //addExhaustion(0.8F);
         }
         else
         {
-            addExhaustion(0.2F);
+			addGeneralExhaustion(4F,0.0F,false); // [ERKIN]
+            //addExhaustion(0.2F);
         }
     }
 
@@ -1634,7 +1697,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             if (i > 0)
             {
                 addStat(StatList.distanceDoveStat, i);
-                addExhaustion(0.015F * (float)i * 0.01F);
+				addGeneralExhaustion(53F,i,true); // [ERKIN]
+				//addExhaustion(0.015F * (float)i * 0.01F);
             }
         }
         else if (isInWater())
@@ -1644,7 +1708,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             if (j > 0)
             {
                 addStat(StatList.distanceSwumStat, j);
-                addExhaustion(0.015F * (float)j * 0.01F);
+				addGeneralExhaustion(53F,j,true); // [ERKIN]
+                //addExhaustion(0.015F * (float)j * 0.01F);
             }
         }
         else if (isOnLadder())
@@ -1664,11 +1729,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
                 if (isSprinting())
                 {
-                    addExhaustion(0.09999999F * (float)k * 0.01F);
+					addGeneralExhaustion(8.00000080000008F,k,true); // [ERKIN]
+                    //addExhaustion(0.09999999F * (float)k * 0.01F);
                 }
                 else
                 {
-                    addExhaustion(0.01F * (float)k * 0.01F);
+					addGeneralExhaustion(80F,k,true); // [ERKIN]
+                    //addExhaustion(0.01F * (float)k * 0.01F);
                 }
             }
         }
@@ -1924,7 +1991,15 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 
         if (!worldObj.isRemote)
         {
-            setEating(true);
+            // [ERKIN]
+            if (par1ItemStack.getItem().getItemName().equals("item.gourdFull"))
+            {
+                setDrinking(true);
+            }
+            else
+            {
+                setEating(true);
+            }
         }
     }
 
@@ -1974,6 +2049,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             inventory.copyInventory(par1EntityPlayer.inventory);
             health = par1EntityPlayer.health;
             foodStats = par1EntityPlayer.foodStats;
+			waterStats = par1EntityPlayer.waterStats; //[ERKIN]
+			energyStats = par1EntityPlayer.energyStats; //[ERKIN]
+			playerTemperature = par1EntityPlayer.playerTemperature; //[ERKIN]
             experienceLevel = par1EntityPlayer.experienceLevel;
             experienceTotal = par1EntityPlayer.experienceTotal;
             experience = par1EntityPlayer.experience;
@@ -2018,5 +2096,93 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
     public InventoryEnderChest func_71005_bN()
     {
         return field_71078_a;
+    }
+	
+	// [ERKIN] Set player exhausted (no energy or hypothermia)
+    private void setPlayerAsExhausted()
+    {
+        landMovementFactor = landMovementFactor / 2f;
+    }
+	
+	/**
+    * increases exhaustion water level by supplied amount
+    */
+    //[ERKIN]
+    public void addWaterExhaustion(float par1)
+    {
+        if (capabilities.disableDamage)
+        {
+            return;
+        }
+
+        if (!worldObj.isRemote)
+        {
+            waterStats.addWaterExhaustion(par1);
+        }
+    }
+	
+	/**
+    * increases exhaustion energy level by supplied amount
+    */
+    //[ERKIN]
+    public void addEnergyExhaustion(float par1)
+    {
+        if (capabilities.disableDamage)
+        {
+            return;
+        }
+
+        if (!worldObj.isRemote)
+        {
+            energyStats.addEnergyExhaustion(par1);
+        }
+    }
+	
+	/**
+	* [ERKIN]
+	* Calculate the global exhaust values
+	*/
+	public void addGeneralExhaustion(float divisor, float movementDistance, boolean isVariable)
+	{
+		float foodExhaustionValue = foodStats.getBaseFoodExhaustionValue() / divisor;
+		float waterExhaustionValue = waterStats.getBaseWaterExhaustionValue() / divisor;
+		float energyExhaustionValue = energyStats.getBaseEnergyExhaustionValue() / divisor;
+
+		if(!isVariable)
+		{
+			addExhaustion(foodExhaustionValue);
+			addWaterExhaustion(waterExhaustionValue);
+			addEnergyExhaustion(energyExhaustionValue);
+		}
+		else
+		{
+			addExhaustion(foodExhaustionValue * movementDistance * 0.01F);
+			addWaterExhaustion(waterExhaustionValue * movementDistance * 0.01F );
+			addEnergyExhaustion(energyExhaustionValue * movementDistance * 0.01F);
+		}
+	}
+	
+	/**
+     * Returns the player's WaterStats object.
+     */
+    //[ERKIN]
+    public WaterStats getWaterStats()
+    {
+        return waterStats;
+    }
+
+    /**
+     * Returns the player's EnergyStats object.
+     */
+    //[ERKIN]
+    public EnergyStats getEnergyStats()
+    {
+        return energyStats;
+    }
+	
+	//[ERKIN]
+    public boolean canDrink(boolean par1)
+    {
+        return (par1 || waterStats.needWater()) && !capabilities.disableDamage;
     }
 }

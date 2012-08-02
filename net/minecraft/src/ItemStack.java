@@ -612,4 +612,10 @@ public final class ItemStack
 
         stackTagCompound.setTag(par1Str, par2NBTBase);
     }
+	
+	// [ERKIN]
+    public ItemStack onWaterDrunk(World par1World, EntityPlayer par2EntityPlayer)
+    {
+        return getItem().onWaterDrunk(this, par1World, par2EntityPlayer);
+    }
 }

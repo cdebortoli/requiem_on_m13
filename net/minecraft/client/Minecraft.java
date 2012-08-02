@@ -272,9 +272,19 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
 
     /** Profiler currently displayed in the debug screen pie chart */
     private String debugProfilerName;
+	
+	// [ERKIN]
+	public EntityClientPlayerMP thePlayer;
+	public WorldClient theWorld;
+    
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
-    {
+    {	
+
+		// [ERKIN]
+		thePlayer = field_71439_g;
+		theWorld = field_71441_e;
+		
         fullscreen = false;
         hasCrashed = false;
         timer = new Timer(20F);
@@ -1294,6 +1304,35 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
      */
     private void clickMouse(int par1)
     {
+	    // [ERKIN] field_71439_g
+        if (par1 == 0)
+        {
+			float f = 1.0F;
+	        float f1 = field_71439_g.prevRotationPitch + (field_71439_g.rotationPitch - field_71439_g.prevRotationPitch) * f;
+	        float f2 = field_71439_g.prevRotationYaw + (field_71439_g.rotationYaw - field_71439_g.prevRotationYaw) * f;
+	        double d = field_71439_g.prevPosX + (field_71439_g.posX - field_71439_g.prevPosX) * (double)f;
+	        double d1 = (field_71439_g.prevPosY + (field_71439_g.posY - field_71439_g.prevPosY) * (double)f + 1.6200000000000001D) - (double)field_71439_g.yOffset;
+	        double d2 = field_71439_g.prevPosZ + (field_71439_g.posZ - field_71439_g.prevPosZ) * (double)f;
+	        Vec3 vec3 = Vec3.func_72437_a().func_72345_a(d, d1, d2);
+	        float f3 = MathHelper.cos(-f2 * 0.01745329F - (float)Math.PI);
+	        float f4 = MathHelper.sin(-f2 * 0.01745329F - (float)Math.PI);
+	        float f5 = -MathHelper.cos(-f1 * 0.01745329F);
+	        float f6 = MathHelper.sin(-f1 * 0.01745329F);
+	        float f7 = f4 * f5;
+	        float f8 = f6;
+	        float f9 = f3 * f5;
+	        double d3 = 5D;
+	        Vec3 vec3_1 = vec3.addVector((double)f7 * d3, (double)f8 * d3, (double)f9 * d3);
+	        MovingObjectPosition waterMovingobjectposition = field_71441_e.rayTraceBlocks_do_do(vec3, vec3_1, true, false);
+			if (waterMovingobjectposition != null)
+            {
+                if (waterMovingobjectposition.typeOfHit == EnumMovingObjectType.TILE)
+                {
+                    field_71439_g.getWaterStats().drinkWaterWithHand(waterMovingobjectposition, field_71439_g);
+                }
+            }
+        }
+		
         if (par1 == 0 && leftClickCounter > 0)
         {
             return;

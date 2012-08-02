@@ -2099,4 +2099,14 @@ public abstract class Entity
                     getClass().getSimpleName(), func_70023_ak(), Integer.valueOf(entityId), worldObj != null ? worldObj.getWorldInfo().getWorldName() : "~NULL~", Double.valueOf(posX), Double.valueOf(posY), Double.valueOf(posZ)
                 });
     }
+
+    // [ERKIN]
+    public boolean isDrinking()
+    {
+        return getFlag(1024);
+    }
+    public void setDrinking(boolean par1)
+    {
+        setFlag(1024, par1);
+    }
 }

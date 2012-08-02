@@ -192,7 +192,11 @@ public class Item
 
     /** full name of item from language file */
     private String itemName;
-
+	
+    /* [ERKIN] */
+    public static Item gourdEmpty;
+    public static Item gourdFull;
+	
     protected Item(int par1)
     {
         field_77701_a = null;
@@ -632,7 +636,13 @@ public class Item
         field_77701_a = par1CreativeTabs;
         return this;
     }
-
+	
+    // [ERKIN]
+    public ItemStack onWaterDrunk(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    {
+        return par1ItemStack;
+    }
+	
     static
     {
         shovelSteel = (new ItemSpade(0, EnumToolMaterial.IRON)).setIconCoord(2, 5).setItemName("shovelIron");
@@ -731,6 +741,8 @@ public class Item
         speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").setPotionEffect(PotionHelper.speckledMelonEffect).func_77637_a(CreativeTabs.field_78038_k);
         field_77821_bF = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").func_77637_a(CreativeTabs.field_78026_f);
         diamond = (new Item(132)).setIconCoord(10, 11).setItemName("emerald").func_77637_a(CreativeTabs.field_78035_l);
+        gourdEmpty = (new ItemGourd(1024, false)).setIconCoord(14, 13).setItemName("gourd"); // [ERKIN]
+        gourdFull = (new ItemGourd(1025, true)).setIconCoord(15, 13).setItemName("gourdFull").setContainerItem(gourdEmpty); // [ERKIN]
         StatList.initStats();
     }
 }

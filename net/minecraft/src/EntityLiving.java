@@ -2187,4 +2187,16 @@ public abstract class EntityLiving extends Entity
             worldObj.spawnParticle((new StringBuilder()).append("iconcrack_").append(par1ItemStack.getItem().shiftedIndex).toString(), vec3_1.xCoord, vec3_1.yCoord, vec3_1.zCoord, vec3.xCoord, vec3.yCoord + 0.050000000000000003D, vec3.zCoord);
         }
     }
+
+	// [ERKIN]
+	protected void jumpWithFatigue()
+	{
+		motionY = 0.41999998688697815D;
+
+        if (isPotionActive(Potion.jump))
+        {
+            motionY += (float)(getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+        }
+        isAirBorne = true;
+	}
 }

@@ -51,6 +51,7 @@ public class ItemFood extends Item
     {
         par1ItemStack.stackSize--;
         par3EntityPlayer.getFoodStats().addStats(this);
+        par3EntityPlayer.getEnergyStats().addStats(1); // [ERKIN]
         par2World.playSoundAtEntity(par3EntityPlayer, "random.burp", 0.5F, par2World.rand.nextFloat() * 0.1F + 0.9F);
         func_77849_c(par1ItemStack, par2World, par3EntityPlayer);
         return par1ItemStack;

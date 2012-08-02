@@ -355,6 +355,11 @@ public class CraftingManager
                 {
                     " B ", "D#D", "###", '#', Block.obsidian, 'B', Item.book, 'D', Item.field_77702_n
                 });
+        // [ERKIN]
+        addRecipe(new ItemStack(Item.gourdEmpty, 1), new Object[]
+                {
+                    " # ", "###", " # ", '#', Item.leather
+                });
         addShapelessRecipe(new ItemStack(Item.eyeOfEnder, 1), new Object[]
                 {
                     Item.enderPearl, Item.blazePowder

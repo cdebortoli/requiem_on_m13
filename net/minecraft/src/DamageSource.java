@@ -15,11 +15,16 @@ public class DamageSource
     public static DamageSource explosion = (new DamageSource("explosion")).func_76351_m();
     public static DamageSource field_76375_l = new DamageSource("explosion");
     public static DamageSource magic = (new DamageSource("magic")).setDamageBypassesArmor();
+    public static DamageSource dehydrated = (new DamageSource("dehydrated")).setDamageBypassesArmor(); //[ERKIN]
+    public static DamageSource hyperthermia = (new DamageSource("hyperthermia")).setDamageBypassesArmor(); //[ERKIN]
+    public static DamageSource hypothermia = (new DamageSource("hypothermia")).setDamageBypassesArmor(); //[ERKIN]
 
     /** This kind of damage can be blocked or not. */
     private boolean isUnblockable;
     private boolean isDamageAllowedInCreativeMode;
     private float hungerDamage;
+    private float thirstDamage; //[ERKIN]
+	private float fatigueDamage; //[ERKIN]
 
     /** This kind of damage is based on fire or not. */
     private boolean fireDamage;
@@ -114,7 +119,9 @@ public class DamageSource
     {
         isUnblockable = false;
         isDamageAllowedInCreativeMode = false;
-        hungerDamage = 0.3F;
+        hungerDamage = 0.09375F; // [ERKIN]
+        thirstDamage = 0.375F; //[ERKIN]
+		fatigueDamage = 0.09375F; // [ERKIN]
         damageType = par1Str;
     }
 
@@ -132,6 +139,8 @@ public class DamageSource
     {
         isUnblockable = true;
         hungerDamage = 0.0F;
+        thirstDamage = 0.0F; //[ERKIN]
+		fatigueDamage = 0.0F; // [ERKIN]
         return this;
     }
 
@@ -184,4 +193,19 @@ public class DamageSource
     {
         return field_76381_t;
     }
+	
+	/**
+    * How much satiate(water) is consumed by this DamageSource
+    */
+    //[ERKIN]
+    public float getThirstDamage()
+    {
+        return thirstDamage;
+    }
+	// [ERKIN}
+	public float getFatigueDamage()
+	{
+		return fatigueDamage;
+	}
+	
 }
