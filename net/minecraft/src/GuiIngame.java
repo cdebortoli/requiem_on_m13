@@ -45,6 +45,7 @@ public class GuiIngame extends Gui
         int j = scaledresolution.getScaledHeight();
         FontRenderer fontrenderer = mc.fontRenderer;
         mc.entityRenderer.setupOverlayRendering();
+
         GL11.glEnable(GL11.GL_BLEND);
 
         if (Minecraft.isFancyGraphicsEnabled())
@@ -101,13 +102,13 @@ public class GuiIngame extends Gui
             int j4 = foodstats.getFoodLevel();
             int i5 = foodstats.getPrevFoodLevel();
 			
-            //[ERKIN]
-            WaterStats waterStats = mc.field_71439_g.getWaterStats();
-            int j1024 = waterStats.getWaterLevel();
-            int l1024 = waterStats.getPrevWaterLevel();
-            EnergyStats	energyStats = mc.field_71439_g.getEnergyStats();
-            int j1025 = energyStats.getEnergyLevel();
-            int l1025 = energyStats.getPrevEnergyLevel();
+	        //[ERKIN]
+	        WaterStats waterStats = mc.field_71439_g.getWaterStats();
+	        int j1024 = waterStats.getWaterLevel();
+	        int l1024 = waterStats.getPrevWaterLevel();
+		    EnergyStats	energyStats = mc.field_71439_g.getEnergyStats();
+	        int j1025 = energyStats.getEnergyLevel();
+	        int l1025 = energyStats.getPrevEnergyLevel();
 			
             mc.field_71424_I.startSection("bossHealth");
             renderBossHealth();
@@ -278,60 +279,6 @@ public class GuiIngame extends Gui
                     }
                 }
 				
-				//[ERKIN] Water gui
-                for (int kWater10 = 0; kWater10 < 10; kWater10++)
-                {
-                    int kWater11 = l7 + 20;
-                    int kWater13 = 100 - kWater10 * 10;
-                    drawTexturedModalRect(kWater13, kWater11,  16, 54, 9, 9);
-
-                    if (kWater10 * 2 + 1 < j1024)
-                    {
-                        drawTexturedModalRect(kWater13, kWater11, 18 + 16, 54, 9, 9);
-                    }
-
-                    if (kWater10 * 2 + 1 == j1024)
-                    {
-                        drawTexturedModalRect(kWater13, kWater11, 9 + 16, 54, 9, 9);
-                    }
-                }
-
-                //[ERKIN] Energy gui TODO StartSection ?
-                for (int kEnergy10 = 0; kEnergy10 < 10; kEnergy10++)
-                {
-                    int kEnergy11 = l7 + 20;
-                    int kEnergy13 = i - 10 - kEnergy10 * 9 ;
-                    drawTexturedModalRect(kEnergy13, kEnergy11, 27 + 16 , 54, 9, 9);
-
-                    if (kEnergy10 * 2 + 1 < j1025)
-                    {
-                        drawTexturedModalRect(kEnergy13, kEnergy11, 45 + 16, 54, 9, 9);
-                    }
-
-                    if (kEnergy10 * 2 + 1 == j1025)
-                    {
-                        drawTexturedModalRect(kEnergy13, kEnergy11, 36 + 16, 54, 9, 9);
-                    }
-                }
-				// [ERKIN] Temperature gui
-				drawTexturedModalRect(10, 10, 54 + 16, 54, 9, 9);
-				if(mc.field_71439_g.playerTemperature.getIsCold())
-				{
-                    drawTexturedModalRect(10, 10, 63 + 16, 54, 9, 9);
-				}
-				if(mc.field_71439_g.playerTemperature.getIsHot())
-				{
-                    drawTexturedModalRect(10, 10, 81 + 16, 54, 9, 9);
-				}
-				if(mc.field_71439_g.playerTemperature.getIsInHypothermia())
-				{
-                    drawTexturedModalRect(10, 10, 72 + 16, 54, 9, 9);
-				}
-				if(mc.field_71439_g.playerTemperature.getIsInHyperthermia())
-				{
-                    drawTexturedModalRect(10, 10, 90 + 16, 54, 9, 9);
-				}
-				
                 mc.field_71424_I.endStartSection("air");
 
                 if (mc.field_71439_g.isInsideOfMaterial(Material.water))
@@ -354,6 +301,65 @@ public class GuiIngame extends Gui
                 }
 
                 mc.field_71424_I.endSection();
+
+				//[ERKIN] Custom gui
+				int requiem_icons = mc.renderEngine.getTexture("/gui/requiem_icons.png");
+		        mc.renderEngine.bindTexture(requiem_icons);
+				//[ERKIN] Water gui
+                for (int kWater10 = 0; kWater10 < 10; kWater10++)
+                {
+                    int kWater11 = l7 + 20;
+                    int kWater13 = 100 - kWater10 * 10;
+                    drawTexturedModalRect(kWater13, kWater11,  0, 0, 9, 9);
+
+                    if (kWater10 * 2 + 1 < j1024)
+                    {
+                        drawTexturedModalRect(kWater13, kWater11, 18, 0, 9, 9);
+                    }
+
+                    if (kWater10 * 2 + 1 == j1024)
+                    {
+                        drawTexturedModalRect(kWater13, kWater11, 9 , 0, 9, 9);
+                    }
+                }
+
+                //[ERKIN] Energy gui TODO StartSection ?
+                for (int kEnergy10 = 0; kEnergy10 < 10; kEnergy10++)
+                {
+                    int kEnergy11 = l7 + 20;
+                    int kEnergy13 = i - 10 - kEnergy10 * 9 ;
+                    drawTexturedModalRect(kEnergy13, kEnergy11, 27 , 0, 9, 9);
+
+                    if (kEnergy10 * 2 + 1 < j1025)
+                    {
+                        drawTexturedModalRect(kEnergy13, kEnergy11, 45, 0, 9, 9);
+                    }
+
+                    if (kEnergy10 * 2 + 1 == j1025)
+                    {
+                        drawTexturedModalRect(kEnergy13, kEnergy11, 36, 0, 9, 9);
+                    }
+                }
+
+				// [ERKIN] Temperature gui
+				drawTexturedModalRect(10, 10, 54, 0, 9, 9);
+				if(mc.field_71439_g.playerTemperature.getIsCold())
+				{
+                    drawTexturedModalRect(10, 10, 63, 0, 9, 9);
+				}
+				if(mc.field_71439_g.playerTemperature.getIsHot())
+				{
+                    drawTexturedModalRect(10, 10, 81, 0, 9, 9);
+				}
+				if(mc.field_71439_g.playerTemperature.getIsInHypothermia())
+				{
+                    drawTexturedModalRect(10, 10, 72, 0, 9, 9);
+				}
+				if(mc.field_71439_g.playerTemperature.getIsInHyperthermia())
+				{
+                    drawTexturedModalRect(10, 10, 90 , 0, 9, 9);
+				}
+		        GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/icons.png"));
             }
 
             GL11.glDisable(GL11.GL_BLEND);
