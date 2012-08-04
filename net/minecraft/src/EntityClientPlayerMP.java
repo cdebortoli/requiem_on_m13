@@ -276,4 +276,20 @@ public class EntityClientPlayerMP extends EntityPlayerSP
     {
         return true;
     }
+	
+	// [ERKIN]
+	public void checkIfDrinkWithHand(MovingObjectPosition waterMovingobjectposition)
+	{
+	    int i = waterMovingobjectposition.blockX;
+        int j = waterMovingobjectposition.blockY;
+        int k = waterMovingobjectposition.blockZ;
+
+        if (this.worldObj.getBlockMaterial(i, j, k) == Material.water && this.worldObj.getBlockMetadata(i, j, k) == 0)
+        {
+            this.worldObj.playSoundAtEntity(this, "random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F); //TODO : Not working anymore ? It's the World Server and not client which need to play sounds ?
+            waterStats.addStats(20);
+            this.playerTemperature.playerDrinkSomeWater(20);
+            sendQueue.addToSendQueue(new Packet240UpdateRequiem(waterStats.getWaterLevel(), energyStats.getEnergyLevel()));
+        }
+	}
 }

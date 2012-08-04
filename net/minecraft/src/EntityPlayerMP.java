@@ -16,6 +16,8 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     public final List field_71130_g = new LinkedList();
     private int field_71149_ch;
     private int field_71146_ci;
+	private int waterLevelMP; // [ERKIN]
+	private int energyLevelMP; // [ERKIN]
     private boolean field_71147_cj;
     private int field_71144_ck;
     private int field_71145_cl;
@@ -37,6 +39,8 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         field_71148_cg = new StringTranslate("en_US");
         field_71149_ch = 0xfa0a1f01;
         field_71146_ci = 0xfa0a1f01;
+		waterLevelMP = 0xfa0a1f01; // [ERKIN]
+		energyLevelMP = 0xfa0a1f01; // [ERKIN]
         field_71147_cj = true;
         field_71144_ck = 0xfa0a1f01;
         field_71145_cl = 60;
@@ -249,6 +253,8 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                         field_71144_ck = -1;
                         field_71149_ch = -1;
                         field_71146_ci = -1;
+						waterLevelMP = -1; // [ERKIN]
+						energyLevelMP = -1; // [ERKIN]
                         triggerAchievement(AchievementList.portal);
                     }
                 }
@@ -281,7 +287,16 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             field_71146_ci = foodStats.getFoodLevel();
             field_71147_cj = foodStats.getSaturationLevel() == 0.0F;
         }
-
+		
+		// [ERKIN]
+		if(waterLevelMP != waterStats.getWaterLevel())
+		{
+			field_71135_a.func_72567_b(new Packet240UpdateRequiem(waterStats.getWaterLevel(), energyStats.getEnergyLevel()));
+			waterLevelMP = waterStats.getWaterLevel();
+			energyLevelMP = energyStats.getEnergyLevel();
+		}
+		
+		
         if (experienceTotal != field_71144_ck)
         {
             field_71144_ck = experienceTotal;
@@ -374,6 +389,8 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             field_71144_ck = -1;
             field_71149_ch = -1;
             field_71146_ci = -1;
+			waterLevelMP = -1; // [ERKIN]
+			energyLevelMP = -1; // [ERKIN]
         }
     }
 

@@ -193,7 +193,7 @@ public abstract class NetHandler
     {
         registerPacket(par1Packet8UpdateHealth);
     }
-
+	
     /**
      * respawns the player
      */
@@ -430,4 +430,10 @@ public abstract class NetHandler
     {
         return false;
     }
+	
+	//[ERKIN]
+	public void handleUpdateRequiem(Packet240UpdateRequiem par1Packet240UpdateRequiem)
+	{
+		registerPacket(par1Packet240UpdateRequiem);
+	}
 }

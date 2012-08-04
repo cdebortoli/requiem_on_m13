@@ -952,7 +952,7 @@ public class NetServerHandler extends NetHandler
     {
         field_72574_e.capabilities.isFlying = par1Packet202PlayerAbilities.func_73350_f() && field_72574_e.capabilities.allowFlying;
     }
-
+	
     public void func_72461_a(Packet203AutoComplete par1Packet203AutoComplete)
     {
         StringBuilder stringbuilder = new StringBuilder();
@@ -1046,4 +1046,11 @@ public class NetServerHandler extends NetHandler
             }
         }
     }
+	
+    // [ERKIN]
+	public void handleUpdateRequiem(Packet240UpdateRequiem par1Packet240UpdateRequiem)
+	{
+        field_72574_e.getWaterStats().setWaterLevel(par1Packet240UpdateRequiem.water);
+        field_72574_e.getEnergyStats().setEnergyLevel(par1Packet240UpdateRequiem.energy);
+	}
 }

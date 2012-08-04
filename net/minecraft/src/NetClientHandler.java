@@ -875,8 +875,8 @@ public class NetClientHandler extends NetHandler
         mc.field_71439_g.getFoodStats().setFoodLevel(par1Packet8UpdateHealth.food);
         mc.field_71439_g.getFoodStats().setFoodSaturationLevel(par1Packet8UpdateHealth.foodSaturation);
     }
-
-    /**
+	
+	/**
      * Handle an experience packet.
      */
     public void handleExperience(Packet43Experience par1Packet43Experience)
@@ -1379,4 +1379,12 @@ public class NetClientHandler extends NetHandler
     {
         return netManager;
     }
+	
+	
+	// [ERKIN]
+    public void handleUpdateRequiem(Packet240UpdateRequiem par1Packet240UpdateRequiem)
+	{
+		mc.field_71439_g.getWaterStats().setWaterLevel(par1Packet240UpdateRequiem.water);
+		mc.field_71439_g.getEnergyStats().setEnergyLevel(par1Packet240UpdateRequiem.energy);
+	}
 }

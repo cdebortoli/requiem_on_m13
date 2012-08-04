@@ -419,5 +419,7 @@ public abstract class Packet
         addIdClassMapping(253, true, false, net.minecraft.src.Packet253ServerAuthData.class);
         addIdClassMapping(254, false, true, net.minecraft.src.Packet254ServerPing.class);
         addIdClassMapping(255, true, true, net.minecraft.src.Packet255KickDisconnect.class);
+		addIdClassMapping(240, true, true, net.minecraft.src.Packet240UpdateRequiem.class); // [ERKIN]
+
     }
 }

@@ -1328,7 +1328,7 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
             {
                 if (waterMovingobjectposition.typeOfHit == EnumMovingObjectType.TILE)
                 {
-                    field_71439_g.getWaterStats().drinkWaterWithHand(waterMovingobjectposition, field_71439_g);
+					field_71439_g.checkIfDrinkWithHand(waterMovingobjectposition);
                 }
             }
         }

@@ -122,7 +122,7 @@ public class WaterStats
     /**
     * Drink water with hands
     **/
-    public void drinkWaterWithHand(MovingObjectPosition waterMovingobjectposition, EntityPlayer par1EntityPlayer)
+    /*public void drinkWaterWithHand(MovingObjectPosition waterMovingobjectposition, EntityPlayer par1EntityPlayer)
     {
         int i = waterMovingobjectposition.blockX;
         int j = waterMovingobjectposition.blockY;
@@ -135,7 +135,7 @@ public class WaterStats
             addStats(20);
             par1EntityPlayer.playerTemperature.playerDrinkSomeWater(20);
         }
-    }
+    }*/
 
     /**
     * Setter and getter

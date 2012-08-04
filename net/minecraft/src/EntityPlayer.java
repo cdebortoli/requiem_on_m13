@@ -358,6 +358,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             startMinecartRidingCoordinate = null;
         }
 
+		System.out.println("entity server or client update ---- : " + waterStats.getWaterLevel());
         if (!worldObj.isRemote)
         {
             foodStats.onUpdate(this);
@@ -371,6 +372,8 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             {
                 setPlayerAsExhausted();
             }
+			System.out.println("server only ---- : " + waterStats.getWaterLevel());
+
         }
     }
 
