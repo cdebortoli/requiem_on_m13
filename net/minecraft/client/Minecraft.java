@@ -274,16 +274,16 @@ public abstract class Minecraft implements Runnable, IPlayerUsage
     private String debugProfilerName;
 	
 	// [ERKIN]
-	public EntityClientPlayerMP thePlayer;
-	public WorldClient theWorld;
+	//public EntityClientPlayerMP thePlayer;
+	//public WorldClient theWorld;
     
 
     public Minecraft(Canvas par1Canvas, MinecraftApplet par2MinecraftApplet, int par3, int par4, boolean par5)
     {	
 
 		// [ERKIN]
-		thePlayer = field_71439_g;
-		theWorld = field_71441_e;
+		//thePlayer = field_71439_g;
+		//theWorld = field_71441_e;
 		
         fullscreen = false;
         hasCrashed = false;
