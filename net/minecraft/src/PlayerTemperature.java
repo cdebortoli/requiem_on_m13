@@ -409,7 +409,7 @@ public class PlayerTemperature
     }
     public void playerDrinkSomeWater(int waterValue)
     {
-		if(hotCount >waterValue * 100)
+		if(hotCount > waterValue * 100)
 		{
 			hotCount -= waterValue * 100;
 		}

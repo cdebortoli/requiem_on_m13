@@ -1050,6 +1050,13 @@ public class NetServerHandler extends NetHandler
     // [ERKIN]
 	public void handleUpdateRequiem(Packet240UpdateRequiem par1Packet240UpdateRequiem)
 	{
+		// If the client send that the player drink water with hand (don't apply if player has already max water)
+		if(field_72574_e.getWaterStats().getWaterLevel() != par1Packet240UpdateRequiem.water)
+		{
+			field_72574_e.worldObj.playSoundAtEntity(field_72574_e, "random.drink", 0.5F, field_72574_e.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            field_72574_e.playerTemperature.playerDrinkSomeWater(20);
+		}
+	
         field_72574_e.getWaterStats().setWaterLevel(par1Packet240UpdateRequiem.water);
         field_72574_e.getEnergyStats().setEnergyLevel(par1Packet240UpdateRequiem.energy);
 		field_72574_e.playerTemperature.setIsHot(par1Packet240UpdateRequiem.isHot);
