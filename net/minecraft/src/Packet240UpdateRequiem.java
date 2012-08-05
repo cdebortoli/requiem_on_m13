@@ -6,15 +6,23 @@ public class Packet240UpdateRequiem extends Packet
 {
 	public int water;
 	public int energy;
+	public boolean isCold;
+	public boolean isHot;
+	public boolean isInHypothermia;
+	public boolean isInHyperthermia;
 
     public Packet240UpdateRequiem()
     {
     }
 
-    public Packet240UpdateRequiem(int waterParam, int energyParam)
+    public Packet240UpdateRequiem(int waterParam, int energyParam, boolean isColdParam, boolean isHotParam, boolean isInHypothermiaParam, boolean isInHyperthermiaParam)
     {
         energy = energyParam;
 		water = waterParam;
+		isCold = isColdParam;
+		isHot = isHotParam;
+		isInHypothermia = isInHypothermiaParam;
+		isInHyperthermia = isInHyperthermiaParam;
     }
 
     /**
@@ -24,6 +32,10 @@ public class Packet240UpdateRequiem extends Packet
     {
         energy = par1DataInputStream.readShort();
         water = par1DataInputStream.readShort();
+		isCold = par1DataInputStream.readBoolean();
+		isHot = par1DataInputStream.readBoolean();
+		isInHypothermia = par1DataInputStream.readBoolean();
+		isInHyperthermia = par1DataInputStream.readBoolean();
     }
 
     /**
@@ -33,6 +45,10 @@ public class Packet240UpdateRequiem extends Packet
     {
         par1DataOutputStream.writeShort(energy);
         par1DataOutputStream.writeShort(water);
+        par1DataOutputStream.writeBoolean(isCold);
+        par1DataOutputStream.writeBoolean(isHot);
+        par1DataOutputStream.writeBoolean(isInHypothermia);
+        par1DataOutputStream.writeBoolean(isInHyperthermia);
     }
 
     /**
@@ -48,7 +64,7 @@ public class Packet240UpdateRequiem extends Packet
      */
     public int getPacketSize()
     {
-        return 8;
+        return 20;
     }
 
     public boolean func_73278_e()

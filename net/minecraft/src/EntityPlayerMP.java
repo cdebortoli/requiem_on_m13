@@ -18,6 +18,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
     private int field_71146_ci;
 	private int waterLevelMP; // [ERKIN]
 	private int energyLevelMP; // [ERKIN]
+	private boolean isColdMP; // [ERKIN]
+	private boolean isHotMP; // [ERKIN]
+	private boolean isInHypothermiaMP; // [ERKIN]
+	private boolean isInHyperthermiaMP; // [ERKIN]
     private boolean field_71147_cj;
     private int field_71144_ck;
     private int field_71145_cl;
@@ -41,6 +45,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         field_71146_ci = 0xfa0a1f01;
 		waterLevelMP = 0xfa0a1f01; // [ERKIN]
 		energyLevelMP = 0xfa0a1f01; // [ERKIN]
+		isColdMP = false; // [ERKIN]
+		isHotMP = false; // [ERKIN]
+		isInHypothermiaMP = false; // [ERKIN]
+		isInHyperthermiaMP = false; // [ERKIN]
         field_71147_cj = true;
         field_71144_ck = 0xfa0a1f01;
         field_71145_cl = 60;
@@ -255,6 +263,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
                         field_71146_ci = -1;
 						waterLevelMP = -1; // [ERKIN]
 						energyLevelMP = -1; // [ERKIN]
+						isColdMP = false; // [ERKIN]
+						isHotMP = false; // [ERKIN]
+						isInHypothermiaMP = false; // [ERKIN]
+						isInHyperthermiaMP = false; // [ERKIN]
                         triggerAchievement(AchievementList.portal);
                     }
                 }
@@ -289,11 +301,15 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
         }
 		
 		// [ERKIN]
-		if(waterLevelMP != waterStats.getWaterLevel())
+		if(waterLevelMP != waterStats.getWaterLevel() || energyLevelMP != energyStats.getEnergyLevel() || isColdMP != playerTemperature.getIsCold() || isHotMP != playerTemperature.getIsHot() || isInHypothermiaMP != playerTemperature.getIsInHypothermia() || isInHyperthermiaMP != playerTemperature.getIsInHyperthermia())
 		{
-			field_71135_a.func_72567_b(new Packet240UpdateRequiem(waterStats.getWaterLevel(), energyStats.getEnergyLevel()));
+			field_71135_a.func_72567_b(new Packet240UpdateRequiem(waterStats.getWaterLevel(), energyStats.getEnergyLevel(),playerTemperature.getIsCold(), playerTemperature.getIsHot(),playerTemperature.getIsInHypothermia(),playerTemperature.getIsInHyperthermia()));
 			waterLevelMP = waterStats.getWaterLevel();
 			energyLevelMP = energyStats.getEnergyLevel();
+			isColdMP = playerTemperature.getIsCold(); // [ERKIN]
+			isHotMP = playerTemperature.getIsHot(); // [ERKIN]
+			isInHypothermiaMP = playerTemperature.getIsInHypothermia(); // [ERKIN]
+			isInHyperthermiaMP = playerTemperature.getIsInHyperthermia(); // [ERKIN]
 		}
 		
 		
@@ -391,6 +407,10 @@ public class EntityPlayerMP extends EntityPlayer implements ICrafting
             field_71146_ci = -1;
 			waterLevelMP = -1; // [ERKIN]
 			energyLevelMP = -1; // [ERKIN]
+			isColdMP = false; // [ERKIN]
+			isHotMP = false; // [ERKIN]
+			isInHypothermiaMP = false; // [ERKIN]
+			isInHyperthermiaMP = false; // [ERKIN]
         }
     }
 

@@ -97,7 +97,12 @@ public class EnergyStats
 		}
 		
 		// Effect of low energy
-        if (energyLevel <= 0)
+        checkIfPlayerIsFatigued();
+
+    }
+	public void checkIfPlayerIsFatigued()
+	{
+	    if (energyLevel <= 0)
         {
             isFatigued = true;
         }
@@ -105,8 +110,7 @@ public class EnergyStats
         {
             isFatigued = false;
         }
-
-    }
+	}
 	
     /**
      * Reads energy stats from an NBT object.

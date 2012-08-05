@@ -419,7 +419,7 @@ public class PlayerTemperature
 		}
     }
 
-    // Get Calculed parameters
+    // Get calculated parameters
     public boolean getIsInHypothermia()
     {
         return isInHypothermia;
@@ -428,7 +428,6 @@ public class PlayerTemperature
     {
         return isInHyperthermia;
     }
-
     public boolean getIsHot()
     {
         return isHot;
@@ -438,6 +437,24 @@ public class PlayerTemperature
         return isCold;
     }
 
+	// Set calculated parameters
+	public void setIsInHypothermia(boolean isInHypothermiaParam)
+	{
+		isInHypothermia = isInHypothermiaParam;
+	}
+    public void setIsInHyperthermia(boolean isInHyperthermiaParam)
+    {
+        isInHyperthermia = isInHyperthermiaParam;
+    }
+    public void setIsHot(boolean isHotParam)
+    {
+        isHot = isHotParam;
+    }
+    public void setIsCold(boolean isColdParam)
+    {
+        isCold = isColdParam;
+    }
+	
     // Save and load functions
     /**
     * Reads player temperatures from an NBT object.

@@ -358,7 +358,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             startMinecartRidingCoordinate = null;
         }
 
-		System.out.println("entity server or client update ---- : " + waterStats.getWaterLevel());
+		//System.out.println("entity server or client update ---- : " + waterStats.getWaterLevel());
         if (!worldObj.isRemote)
         {
             foodStats.onUpdate(this);
@@ -368,12 +368,13 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             playerTemperature.onUpdate(this);
             waterStats.setDehydrationIncreased(playerTemperature.getIsHot());
 			energyStats.setFatigueIncreased(playerTemperature.getIsCold());
-            if (playerTemperature.getIsInHypothermia() || energyStats.getIsFatigued())
-            {
-                setPlayerAsExhausted();
-            }
-			System.out.println("server only ---- : " + waterStats.getWaterLevel());
-
+			//System.out.println("server only ---- : " + waterStats.getWaterLevel());
+        }
+		// [ERKIN]
+		energyStats.checkIfPlayerIsFatigued();
+        if (playerTemperature.getIsInHypothermia() || energyStats.getIsFatigued())
+        {
+            setPlayerAsExhausted();
         }
     }
 

@@ -1052,5 +1052,9 @@ public class NetServerHandler extends NetHandler
 	{
         field_72574_e.getWaterStats().setWaterLevel(par1Packet240UpdateRequiem.water);
         field_72574_e.getEnergyStats().setEnergyLevel(par1Packet240UpdateRequiem.energy);
+		field_72574_e.playerTemperature.setIsHot(par1Packet240UpdateRequiem.isHot);
+		field_72574_e.playerTemperature.setIsCold(par1Packet240UpdateRequiem.isCold);
+		field_72574_e.playerTemperature.setIsInHypothermia(par1Packet240UpdateRequiem.isInHypothermia);
+		field_72574_e.playerTemperature.setIsInHyperthermia(par1Packet240UpdateRequiem.isInHyperthermia);
 	}
 }
