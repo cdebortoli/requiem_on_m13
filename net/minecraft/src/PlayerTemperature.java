@@ -8,7 +8,7 @@ public class PlayerTemperature
     private final int zDistanceToCheck = 5;
     // Item value for heat source
     private final float furnaceHeatProduction = 10f;
-    private final float lavaHeatProduction = 30f;
+    private final float lavaHeatProduction = 40f;
     private final float torchHeatProduction = 5f;
     private final float redstoneHeatProduction = 10f;
     private final float redstoneLampHeatProduction = 20f;

@@ -16,6 +16,8 @@ public class WaterStats
     private float dehydrationIncreasedExhaustionValue;
 
 	private float baseWaterExhaustionValue;
+	private float baseWaterExhaustionValueNormal;
+	private float baseWaterExhaustionValueWhenIsHot;
 	
     public WaterStats()
     {
@@ -23,8 +25,9 @@ public class WaterStats
         waterLevel = 20;
         prevWaterLevel = 20;
         dehydrationIncreased = false;
-        dehydrationIncreasedExhaustionValue = 0.015F;
-		baseWaterExhaustionValue = 0.9F;
+        baseWaterExhaustionValueWhenIsHot = 1.0F;
+		baseWaterExhaustionValueNormal = 0.9F;
+		baseWaterExhaustionValue = baseWaterExhaustionValueNormal;
     }
 
     /**
@@ -48,6 +51,15 @@ public class WaterStats
      */
     public void onUpdate(EntityPlayer par1EntityPlayer)
     {
+		if(par1EntityPlayer.playerTemperature.getIsHot())
+		{
+			baseWaterExhaustionValue = baseWaterExhaustionValueWhenIsHot;
+		}
+		else
+		{
+			baseWaterExhaustionValue = baseWaterExhaustionValueNormal;
+		}
+	
         int i = par1EntityPlayer.worldObj.difficultySetting;
         prevWaterLevel = waterLevel;
 
@@ -109,14 +121,7 @@ public class WaterStats
      */
     public void addWaterExhaustion(float par1)
     {
-        float newExhaustionLevel = par1;
-
-        if (dehydrationIncreased)
-        {
-            newExhaustionLevel = par1 + dehydrationIncreasedExhaustionValue;
-        }
-
-        waterExhaustionLevel = Math.min(waterExhaustionLevel + newExhaustionLevel, 40F);
+        waterExhaustionLevel = Math.min(waterExhaustionLevel + par1, 40F);
     }
 
     /**
@@ -145,14 +150,14 @@ public class WaterStats
     {
         waterLevel = par1;
     }
-    public void setDehydrationIncreased(boolean par1)
+    /*public void setDehydrationIncreased(boolean par1)
     {
         dehydrationIncreased = par1;
-    }
-    public boolean getDehydrationIncreased()
+    }*/
+    /*public boolean getDehydrationIncreased()
     {
         return dehydrationIncreased;
-    }
+    }*/
 	public float getBaseWaterExhaustionValue()
 	{
 		return baseWaterExhaustionValue;

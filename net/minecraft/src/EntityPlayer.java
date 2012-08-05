@@ -151,7 +151,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         playerTemperature = new PlayerTemperature(); //[ERKIN]
         energyStats = new EnergyStats(); // [ERKIN]
         //DEBUG [ERKIN]
-        //inventory.addItemStackToInventory(new ItemStack(Item.bed, 1));
+        inventory.addItemStackToInventory(new ItemStack(Item.bed, 1));
         inventory.addItemStackToInventory(new ItemStack(Item.gourdFull, 1));
         inventory.addItemStackToInventory(new ItemStack(Item.leather, 10));
     }
@@ -366,11 +366,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
             waterStats.onUpdate(this);
             energyStats.onUpdate(this);
             playerTemperature.onUpdate(this);
-            waterStats.setDehydrationIncreased(playerTemperature.getIsHot());
-			energyStats.setFatigueIncreased(playerTemperature.getIsCold());
 			//System.out.println("server only ---- : " + waterStats.getWaterLevel());
         }
 		// [ERKIN]
+		// Effects on player (client and server)
 		energyStats.checkIfPlayerIsFatigued();
         if (playerTemperature.getIsInHypothermia() || energyStats.getIsFatigued())
         {
@@ -2151,7 +2150,7 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		float foodExhaustionValue = foodStats.getBaseFoodExhaustionValue() / divisor;
 		float waterExhaustionValue = waterStats.getBaseWaterExhaustionValue() / divisor;
 		float energyExhaustionValue = energyStats.getBaseEnergyExhaustionValue() / divisor;
-
+        
 		if(!isVariable)
 		{
 			addExhaustion(foodExhaustionValue);

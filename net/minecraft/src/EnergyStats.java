@@ -8,15 +8,13 @@ public class EnergyStats
     private float energyExhaustionLevel;
     private int prevEnergyLevel;
 
-    private boolean fatigueIncreased;
-    private float fatigueIncreasedExhaustionValue;
     private boolean isFatigued;
 	
 	private float baseEnergyExhaustionValue;
 	private float baseEnergyExhaustionValueNormal;
 	private float baseEnergyExhaustionValueWhenHungry;
 	private float baseEnergyExhaustionValueWhenThirsty;
-	private float baseEnergyExhaustionValueWhenHungryAndThirsty;
+	private float baseEnergyExhaustionValueWhenHyperthermiaOrHypothermia;
 	
 	private int baseEnergyRegenerationTimer;
 	private int energyRegenerationTimer;
@@ -26,13 +24,11 @@ public class EnergyStats
     {
         energyLevel = 20;
         prevEnergyLevel = 20;
-        fatigueIncreased = false;
-        fatigueIncreasedExhaustionValue = 0.015F;
         isFatigued = false;
 		baseEnergyExhaustionValueNormal = 0.25F;
-		baseEnergyExhaustionValueWhenThirsty = 0.35F;
-		baseEnergyExhaustionValueWhenHungry = 0.45F;
-		baseEnergyExhaustionValueWhenHungryAndThirsty = 0.55F;
+		baseEnergyExhaustionValueWhenThirsty = 0.10F;
+		baseEnergyExhaustionValueWhenHungry = 0.15F;
+		baseEnergyExhaustionValueWhenHyperthermiaOrHypothermia = 0.25F;
 		baseEnergyExhaustionValue = baseEnergyExhaustionValueNormal;
 		
 		baseEnergyRegenerationTimer = 6000;
@@ -53,21 +49,18 @@ public class EnergyStats
     public void onUpdate(EntityPlayer par1EntityPlayer)
     {
 		// Check if player is hungry or thirsty
-		if((par1EntityPlayer.getFoodStats().getFoodLevel()<=2)&&(par1EntityPlayer.getWaterStats().getWaterLevel()<=2))
+		baseEnergyExhaustionValue = baseEnergyExhaustionValueNormal;
+		if(par1EntityPlayer.getFoodStats().getFoodLevel()<=2)
 		{
-			baseEnergyExhaustionValue = baseEnergyExhaustionValueWhenHungryAndThirsty;
+			baseEnergyExhaustionValue += baseEnergyExhaustionValueWhenHungry;
 		}
-		else if(par1EntityPlayer.getFoodStats().getFoodLevel()<=2)
+		if(par1EntityPlayer.getWaterStats().getWaterLevel()<=2)
 		{
-			baseEnergyExhaustionValue = baseEnergyExhaustionValueWhenHungry;
+			baseEnergyExhaustionValue += baseEnergyExhaustionValueWhenThirsty;
 		}
-		else if(par1EntityPlayer.getWaterStats().getWaterLevel()<=2)
+		if((par1EntityPlayer.playerTemperature.getIsInHypothermia()) || (par1EntityPlayer.playerTemperature.getIsInHyperthermia()))
 		{
-			baseEnergyExhaustionValue = baseEnergyExhaustionValueWhenThirsty;
-		}
-		else
-		{
-			baseEnergyExhaustionValue = baseEnergyExhaustionValueNormal;
+			baseEnergyExhaustionValue += baseEnergyExhaustionValueWhenHyperthermiaOrHypothermia;
 		}
 		
 		// Calcul energy loss
@@ -98,7 +91,6 @@ public class EnergyStats
 		
 		// Effect of low energy
         checkIfPlayerIsFatigued();
-
     }
 	public void checkIfPlayerIsFatigued()
 	{
@@ -166,14 +158,7 @@ public class EnergyStats
      */
     public void addEnergyExhaustion(float par1)
     {
-        float newExhaustionLevel = par1;
-
-        if (fatigueIncreased)
-        {
-            newExhaustionLevel = par1 + fatigueIncreasedExhaustionValue;
-        }
-
-        energyExhaustionLevel = Math.min(energyExhaustionLevel + newExhaustionLevel, 40F);
+        energyExhaustionLevel = Math.min(energyExhaustionLevel + par1, 40F);
     }
 
     public void setEnergyLevel(int par1)
@@ -181,14 +166,6 @@ public class EnergyStats
         energyLevel = par1;
     }
 
-    public void setFatigueIncreased(boolean par1)
-    {
-        fatigueIncreased = par1;
-    }
-    public boolean getFatigueIncreased()
-    {
-        return fatigueIncreased;
-    }
 	public float getBaseEnergyExhaustionValue()
 	{
 		return baseEnergyExhaustionValue;
