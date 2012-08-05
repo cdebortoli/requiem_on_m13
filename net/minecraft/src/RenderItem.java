@@ -91,8 +91,16 @@ public class RenderItem extends Render
         else if (itemstack.getItem().requiresMultipleRenderPasses())
         {
             GL11.glScalef(0.5F, 0.5F, 0.5F);
-            loadTexture("/gui/items.png");
-
+			
+			// [ERKIN]
+			if (itemstack.getItem().getIsRequiemItem())
+			{
+				loadTexture("/gui/requiem_items.png");
+			}
+			else
+			{
+				loadTexture("/gui/items.png");
+			}
             for (int i = 0; i <= 1; i++)
             {
                 int l = itemstack.getItem().getIconFromDamageForRenderPass(itemstack.getItemDamage(), i);
@@ -121,7 +129,15 @@ public class RenderItem extends Render
             }
             else
             {
-                loadTexture("/gui/items.png");
+				// [ERKIN]
+				if (itemstack.getItem().getIsRequiemItem())
+				{
+					loadTexture("/gui/requiem_items.png");
+				}
+				else
+				{
+					loadTexture("/gui/items.png");
+				}
             }
 
             if (field_77024_a)
@@ -208,8 +224,16 @@ public class RenderItem extends Render
         else if (Item.itemsList[par3].requiresMultipleRenderPasses())
         {
             GL11.glDisable(GL11.GL_LIGHTING);
-            par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
-
+			
+			// [ERKIN]
+			if (Item.itemsList[par3].getIsRequiemItem())
+			{
+				par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/requiem_items.png"));
+			}
+			else
+			{
+				par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+			}
             for (int i = 0; i <= 1; i++)
             {
                 int l = Item.itemsList[par3].getIconFromDamageForRenderPass(par4, i);
@@ -238,7 +262,16 @@ public class RenderItem extends Render
             }
             else
             {
-                par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+				
+				// [ERKIN]
+				if (Item.itemsList[par3].getIsRequiemItem())
+				{
+					par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/requiem_items.png"));
+				}
+				else
+				{
+					par2RenderEngine.bindTexture(par2RenderEngine.getTexture("/gui/items.png"));
+				}
             }
 
             int j = Item.itemsList[par3].getColorFromDamage(par4, 0);

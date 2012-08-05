@@ -196,9 +196,11 @@ public class Item
     /* [ERKIN] */
     public static Item gourdEmpty;
     public static Item gourdFull;
+	public boolean isRequiemItem;
 	
     protected Item(int par1)
     {
+		isRequiemItem = false;
         field_77701_a = null;
         maxStackSize = 64;
         maxDamage = 0;
@@ -642,6 +644,15 @@ public class Item
     {
         return par1ItemStack;
     }
+	public Item setIsRequiemItem(boolean par1)
+	{
+		isRequiemItem = par1;
+		return this;
+	}
+	public boolean getIsRequiemItem()
+	{
+		return isRequiemItem;
+	}
 	
     static
     {
@@ -741,8 +752,8 @@ public class Item
         speckledMelon = (new Item(126)).setIconCoord(9, 8).setItemName("speckledMelon").setPotionEffect(PotionHelper.speckledMelonEffect).func_77637_a(CreativeTabs.field_78038_k);
         field_77821_bF = (new ItemWritableBook(130)).setIconCoord(11, 11).setItemName("writingBook").func_77637_a(CreativeTabs.field_78026_f);
         diamond = (new Item(132)).setIconCoord(10, 11).setItemName("emerald").func_77637_a(CreativeTabs.field_78035_l);
-        gourdEmpty = (new ItemGourd(1024, false)).setIconCoord(14, 13).setItemName("gourd"); // [ERKIN]
-        gourdFull = (new ItemGourd(1025, true)).setIconCoord(15, 13).setItemName("gourdFull").setContainerItem(gourdEmpty); // [ERKIN]
+        gourdEmpty = (new ItemGourd(1024, false)).setIconCoord(0, 0).setItemName("gourd").setIsRequiemItem(true); // [ERKIN]
+        gourdFull = (new ItemGourd(1025, true)).setIconCoord(1, 0).setItemName("gourdFull").setContainerItem(gourdEmpty).setIsRequiemItem(true); // [ERKIN]
         StatList.initStats();
     }
 }

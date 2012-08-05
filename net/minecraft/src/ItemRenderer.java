@@ -55,7 +55,15 @@ public class ItemRenderer
             }
             else
             {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/items.png"));
+				// [ERKIN]
+				if (par2ItemStack.getItem().getIsRequiemItem())
+				{
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/requiem_items.png"));
+				}
+				else
+				{
+					GL11.glBindTexture(GL11.GL_TEXTURE_2D, mc.renderEngine.getTexture("/gui/items.png"));
+				}
             }
 
             Tessellator tessellator = Tessellator.instance;
