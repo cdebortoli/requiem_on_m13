@@ -151,9 +151,9 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
         playerTemperature = new PlayerTemperature(); //[ERKIN]
         energyStats = new EnergyStats(); // [ERKIN]
         //DEBUG [ERKIN]
-        inventory.addItemStackToInventory(new ItemStack(Item.bed, 1));
-        inventory.addItemStackToInventory(new ItemStack(Item.gourdFull, 1));
-        inventory.addItemStackToInventory(new ItemStack(Item.leather, 10));
+        //inventory.addItemStackToInventory(new ItemStack(Item.bed, 1));
+        //inventory.addItemStackToInventory(new ItemStack(Item.gourdFull, 1));
+        //inventory.addItemStackToInventory(new ItemStack(Item.leather, 10));
     }
 
     public int getMaxHealth()
@@ -2150,7 +2150,10 @@ public abstract class EntityPlayer extends EntityLiving implements ICommandSende
 		float foodExhaustionValue = foodStats.getBaseFoodExhaustionValue() / divisor;
 		float waterExhaustionValue = waterStats.getBaseWaterExhaustionValue() / divisor;
 		float energyExhaustionValue = energyStats.getBaseEnergyExhaustionValue() / divisor;
-        
+        /*if (!worldObj.isRemote)
+        {
+			System.out.println("server only energy consumption---- : " + energyStats.getBaseEnergyExhaustionValue());
+		}*/
 		if(!isVariable)
 		{
 			addExhaustion(foodExhaustionValue);

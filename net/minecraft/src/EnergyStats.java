@@ -14,6 +14,7 @@ public class EnergyStats
 	private float baseEnergyExhaustionValueNormal;
 	private float baseEnergyExhaustionValueWhenHungry;
 	private float baseEnergyExhaustionValueWhenThirsty;
+	private float baseEnergyExhaustionValueWhenHotOrCold;
 	private float baseEnergyExhaustionValueWhenHyperthermiaOrHypothermia;
 	
 	private int baseEnergyRegenerationTimer;
@@ -28,6 +29,7 @@ public class EnergyStats
 		baseEnergyExhaustionValueNormal = 0.25F;
 		baseEnergyExhaustionValueWhenThirsty = 0.10F;
 		baseEnergyExhaustionValueWhenHungry = 0.15F;
+		baseEnergyExhaustionValueWhenHotOrCold = 0.10F;
 		baseEnergyExhaustionValueWhenHyperthermiaOrHypothermia = 0.25F;
 		baseEnergyExhaustionValue = baseEnergyExhaustionValueNormal;
 		
@@ -61,6 +63,10 @@ public class EnergyStats
 		if((par1EntityPlayer.playerTemperature.getIsInHypothermia()) || (par1EntityPlayer.playerTemperature.getIsInHyperthermia()))
 		{
 			baseEnergyExhaustionValue += baseEnergyExhaustionValueWhenHyperthermiaOrHypothermia;
+		}
+		if((par1EntityPlayer.playerTemperature.getIsCold()) || (par1EntityPlayer.playerTemperature.getIsHot()))
+		{
+			baseEnergyExhaustionValue += baseEnergyExhaustionValueWhenHotOrCold;
 		}
 		
 		// Calcul energy loss

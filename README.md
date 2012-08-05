@@ -22,6 +22,9 @@ TODO conversion :
 - Different exhaustion level for energy DONE ?
 - in EntityPlayer.java : addEnergyExhaustion(par1DamageSource.getFatigueDamage()); // [ERKIN] Add coef in function of thristy/starve
 - ItemCreative tab ?
+- Retirer furnace inactive de source de chaleur.
+- Approfondir la gestion de chaleur si on boit.
+- Perte d'énergie plus élevé si hypothermie/hyperthermie.
 
 Resource :
 Add files in jar/minecraft.java/gui
